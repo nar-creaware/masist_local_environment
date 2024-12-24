@@ -1,0 +1,25 @@
+global:
+  scrape_interval: 15s # Varsayılan scrape sıklığı
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['prometheus:9090']
+
+  - job_name: 'elasticsearch'
+    static_configs:
+      - targets: ['elasticsearch:9200']
+
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+
+  - job_name: 'kokpit-api'
+    scrape_interval: 10s
+    scheme: http # HTTPS protokolü kullandığınız için bu gerekli
+    static_configs:
+      - targets: ['host.docker.internal:5240'] # host.docker.internal, Docker'dan localhost'a erişimi sağlar
+    metrics_path: '/metrics' # Metrik endpoint'iniz
+    tls_config:
+      insecure_skip_verify: true
+    
