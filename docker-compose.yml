@@ -4,6 +4,7 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+    restart: unless-stopped
 
   redisinsight:
     image: redis/redisinsight:latest
@@ -13,8 +14,10 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+    restart: unless-stopped
     depends_on:
       - redis
+    
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -22,6 +25,7 @@ services:
     ports:
       - "5672:5672" # RabbitMQ default message broker port
       - "15672:15672" # RabbitMQ management UI
+    restart: unless-stopped
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
@@ -35,6 +39,7 @@ services:
       POSTGRES_DB: postgres
     ports:
       - "5432:5432"
+    restart: unless-stopped
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -46,6 +51,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - "8080:80"
+    restart: unless-stopped
     depends_on:
       - postgres
     volumes:
